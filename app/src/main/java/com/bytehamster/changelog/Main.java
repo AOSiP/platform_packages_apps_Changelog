@@ -182,7 +182,7 @@ public class Main extends Activity {
                     }
 
                     if (!mLastDate.equals(currentChange.dateDay)) {
-                        Map<String, Object> new_item = new HashMap<String, Object>();
+                        Map<String, Object> new_item = new HashMap<>();
                         new_item.put("title", currentChange.dateDay);
                         new_item.put("type", Change.TYPE_HEADER);
                         mChangesList.add(new_item);
@@ -412,13 +412,12 @@ public class Main extends Activity {
     private final SimpleAdapter.ViewBinder all_devices_view_binder = new SimpleAdapter.ViewBinder() {
         @Override
         public boolean setViewValue(final View view, Object data, final String textRepresentation) {
-            switch (view.getId()) {
-                case R.id.aside:
-                    if (Build.DEVICE.toLowerCase(Locale.getDefault()).equals(textRepresentation) ||
-                            Build.MODEL.toLowerCase(Locale.getDefault()).replace("gt-", "").equals(textRepresentation)) {
-                        ((TextView) view).setText(R.string.this_device);
-                    } else ((TextView) view).setText("");
-                    return true;
+            if (view.getId() == R.id.aside) {
+                if (Build.DEVICE.toLowerCase(Locale.getDefault()).equals(textRepresentation) ||
+                        Build.MODEL.toLowerCase(Locale.getDefault()).replace("gt-", "").equals(textRepresentation)) {
+                    ((TextView) view).setText(R.string.this_device);
+                } else ((TextView) view).setText("");
+                return true;
             }
             return false;
         }
@@ -468,7 +467,7 @@ public class Main extends Activity {
     private final AdapterView.OnItemLongClickListener MainListLongClickListener = new AdapterView.OnItemLongClickListener() {
         @Override
         public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-            if ((Integer) mChangesList.get(position).get("type") == Change.TYPE_ITEM) {
+            if ((int) mChangesList.get(position).get("type") == Change.TYPE_ITEM) {
                 AlertDialog.Builder d = new AlertDialog.Builder(mActivity);
                 d.setCancelable(false);
                 d.setMessage((String) mChangesList.get(position).get("title"));
@@ -491,7 +490,7 @@ public class Main extends Activity {
     private final AdapterView.OnItemClickListener MainListClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-            if ((Integer) mChangesList.get(position).get("type") == Change.TYPE_ITEM) {
+            if ((int) mChangesList.get(position).get("type") == Change.TYPE_ITEM) {
 
                 if (mSharedPreferences.getString("list_action", "popup").equals("popup")) {
                     Dialogs.changeDetails(mActivity, mChangesList.get(position), GERRIT_URL);
